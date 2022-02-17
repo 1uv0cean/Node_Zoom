@@ -1,1 +1,3 @@
-# Node_API
+# Node_Zoom
+
+Zoom Clone using NodeJS, WebRTC and Websockets.
