@@ -10,6 +10,11 @@ html(lang="en")
         header 
             h1 Node_Zoom 
         main 
-            h2 Welcom to Node_Zoom
-        button call
+            form#nick
+                input(type="text", placeholder="choose a nickname", required) 
+                button Save
+            ul
+            form#message
+                input(type="text", placeholder="write a msg", required)
+                button Send
         script(src="/public/js/app.js")

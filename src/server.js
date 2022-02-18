@@ -15,13 +15,30 @@ const handleListen = () => console.log(`Listning on http://localhost:3000`)
 const server = http.createServer(app)
 const wss = new WebSocket.Server({ server })
 
+function onSocketClose() {
+    console.log("Disconnected from the Browser❌")
+}
+
+const sockets = []
+
+
 wss.on("connection", (socket) =>{
+    sockets.push(socket)
+    socket["nickname"] = "익명"
     console.log("Connected to Browser✅")
-    socket.on("close", () => console.log("Disconnected from the Browser❌"))
-    socket.on("message", (message) =>{
-        console.log(message.toString('utf-8'))
+    socket.on("close", onSocketClose)
+    socket.on("message", (msg) =>{
+        msg = msg.toString('utf-8')
+        const message = JSON.parse(msg)
+        switch(message.type){
+            case "new_message":
+                sockets.forEach((aSocket) => 
+                aSocket.send(`${socket.nickname}: ${message.payload}`)
+                )
+            case "nickname":
+                socket["nickname"] = message.payload
+        }
     })
-    socket.send("Hello!")
 })
 
 server.listen(3000, handleListen)
